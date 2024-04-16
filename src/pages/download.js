@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import * as FileSystem from 'expo-file-system';
-import { View, ScrollView, Text, Pressable, StyleSheet, Modal } from 'react-native';
-import PocketBase from 'pocketbase'; // Import PocketBase library
+import { View, ScrollView, Text, Pressable, StyleSheet, Modal, Button } from 'react-native';
+import PocketBase from 'pocketbase';
 
 const DownloadPage = () => {
     const [data, setData] = useState([]);
     const [download, setDownload] = useState();
+
+    const [downloadGoal, setDownloadGoal] = useState(0);
+    const [downloadProgress, setDownloadProgress] = useState(1189);
 
     const BibleBookNames = [
         { "name": "GEN", "chapters": 50 },
@@ -102,58 +105,81 @@ const DownloadPage = () => {
     }, []); // Empty dependency array to ensure effect runs only once on component mount
 
     useEffect(() => {
-        downloadVersion();
+        if (download)
+            downloadVersion();
     }, [download]);
 
+    const listDirectoryContents = async () => {
+        try {
+            const contents = await FileSystem.readDirectoryAsync(FileSystem.documentDirectory + "Bibles/KJB1900/GEN");
+            console.log('Contents:', contents);
+            //console.log('URI: ', directoryUri)
+            return contents;
+        } catch (error) {
+            console.error('Error reading directory:', error);
+        }
+    }
+
     const downloadVersion = async () => {
-        if (download)
-            try {
-                let totalBooksToDownload = 0;
-                let startBookIndex = 0;
-
-                switch (download.fullBible) {
-                    case 0:
-                        totalBooksToDownload = 66; // Full Bible
-                        break;
-                    case 1:
-                        totalBooksToDownload = 39; // Old Testament Only
-                        break;
-                    case 2:
-                        totalBooksToDownload = 27;
-                        startBookIndex = 39; // New Testament Only
-                        break;
-                    default:
-                        console.warn('Invalid value. Please provide a valid value (0, 1, or 2).');
-                        return;
-                }
-
-                for (let i = startBookIndex; i < startBookIndex + totalBooksToDownload; i++) {
-                    await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + `${download.shortName}/${BibleBookNames[i].name}`, {});
-
-                    console.log(`Book ${i} downloaded to ${FileSystem.documentDirectory + `${download.shortName}/${BibleBookNames[i].name}`}`);
-
-                    // Download chapters for the current book
-                    await downloadChaptersForBook(i);
-                }
-
-                console.log('All books and chapters downloaded successfully');
-            } catch (error) {
-                console.error('Error downloading books and chapters:', error);
+        try {
+            const dirInfo = await FileSystem.getInfoAsync(FileSystem.documentDirectory + `Bibles`);
+            if (!dirInfo.exists) {
+                await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + `Bibles`, {});
+                console.log("'Bible' directory created.");
             }
+            await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + `Bibles/${download.shortName}`, { intermediates: true });
+            let totalBooksToDownload = 0;
+            let startBookIndex = 0;
+
+            switch (download.fullBible) {
+                case 0:
+                    totalBooksToDownload = 66; // Full Bible
+                    setDownloadGoal(1189);
+                    break;
+                case 1:
+                    totalBooksToDownload = 39; // Old Testament Only
+                    setDownloadGoal(929);
+                    break;
+                case 2:
+                    totalBooksToDownload = 27;
+                    startBookIndex = 39; // New Testament Only
+                    setDownloadGoal(260);
+                    break;
+                default:
+                    console.warn('Invalid value. Please provide a valid value (0, 1, or 2).');
+                    return;
+            }
+
+            for (let i = startBookIndex; i < startBookIndex + totalBooksToDownload; i++) {
+                await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + `Bibles/${download.shortName}/${BibleBookNames[i].name}`, { intermediates: true });
+
+                //console.log(`Book ${i} downloaded to ${FileSystem.documentDirectory + `Bibles/${download.shortName}/${BibleBookNames[i].name}`}`);
+
+                // Download chapters for the current book
+                await downloadChaptersForBook(i);
+            }
+
+            console.log('All books and chapters downloaded successfully');
+            setDownload();
+        } catch (error) {
+            console.error('Error downloading books and chapters:', error);
+            //setDownload();
+        }
     };
 
     const downloadChaptersForBook = async (bookIndex) => {
         try {
             for (let j = 1; j <= BibleBookNames[bookIndex].chapters; j++) {
                 const chapterUrl = `https://raw.githubusercontent.com/kenyonbowers/HostedBibleVersions/main/${"KJB1762"}/${BibleBookNames[bookIndex].name}/${j}.json`;
-                console.log(chapterUrl)
+                //console.log(chapterUrl)
                 const chapterResumable = FileSystem.createDownloadResumable(
                     chapterUrl,
-                    FileSystem.documentDirectory + `${"KJB1762"}/${BibleBookNames[bookIndex].name}/${j}.json`
+                    FileSystem.documentDirectory + `Bibles/${download.shortName}/${BibleBookNames[bookIndex].name}/${j}.json`
                 );
 
                 const { uri: chapterUri } = await chapterResumable.downloadAsync();
-                console.log(`Chapter ${j} of Book ${bookIndex} downloaded to ${chapterUri}`);
+                //console.log(`Chapter ${j} of Book ${bookIndex} downloaded to ${chapterUri}`);
+                setDownloadProgress(downloadProgress + 1);
             }
         } catch (error) {
             console.error(`Error downloading chapters for Book ${bookIndex}:`, error);
@@ -164,8 +190,9 @@ const DownloadPage = () => {
         <ScrollView style={{ marginTop: 10 }}>
             {download && <Modal>
                 <View style={styles.modalContainer}>
-                    <Text style={styles.downloadingText}>Downloading {download.name}...</Text>
+                    <Text style={styles.downloadingText}>Downloading {`download.name`}...</Text>
                     <Text>Please do not close the app.</Text>
+                    <Button title="List Dir" onPress={listDirectoryContents} />
                 </View>
             </Modal>}
             {data.map((version, index) => (
@@ -180,7 +207,7 @@ const DownloadPage = () => {
                 </View>
             ))
             }
-        </ScrollView >
+        </ScrollView>
     );
 };
 
@@ -214,8 +241,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 10,
     },
 });
-
 
 export default DownloadPage;

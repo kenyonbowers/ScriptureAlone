@@ -1,40 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import * as FileSystem from 'expo-file-system';
 import { View, ScrollView, StyleSheet, Switch, TouchableOpacity, Text, Modal, Pressable } from "react-native";
+import { StatusBar } from 'expo-status-bar';
+
 import DualSwitcher from '../bibleComponents/dualSwitcher.js'
 
+
 const BiblePage = ({ book, chap, setPage }) => {
-    const checkFolderExists = async (folderName) => {
-        try {
-            const folderInfo = await FileSystem.getInfoAsync(FileSystem.documentDirectory + folderName);
-            return folderInfo.exists;
-        } catch (error) {
-            console.error('Error checking folder existence:', error);
-            return false;
-        }
-    };
-
-    const [isBibleDownloaded, setIsBibleDownloaded] = useState(checkFolderExists('Bible')['_j']);
-
-    //console.log(isBibleDownloaded);
+    const [isBibleDownloaded, setIsBibleDownloaded] = useState(0);
 
     const [isDualView, setDualView] = useState(true);
     const toggleDualView = () => setDualView(!isDualView);
     const [data, setData] = useState(null);
 
+    const checkForBibleFolder = async () => {
+        const mainDir = await FileSystem.readDirectoryAsync(FileSystem.documentDirectory);
+        if (mainDir.includes("Bibles")) {
+            bibleDir = await FileSystem.readDirectoryAsync(FileSystem.documentDirectory + "Bibles/RVG2023/GEN");
+            return bibleDir;
+        }
+        else
+            return [];
+    }
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const content = await checkForBibleFolder();
+            setIsBibleDownloaded(content.length == 0 ? 2 : 1);
+            console.log(content.length == 0 ? 2 : 1)
+            console.log(content)
+        };
 
-
+        fetchData();
+    }, [])
 
     return (
         <ScrollView contentInsetAdjustmentBehavior="automatic">
-            {isBibleDownloaded ?
+            {isBibleDownloaded == 0 ? <ScrollView></ScrollView> : isBibleDownloaded == 1 ?
                 <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                    <TouchableOpacity style={{ flex: 1, marginRight: 5, backgroundColor: 'lightblue', alignItems: 'center', justifyContent: 'center', height: 40 }}>
-                        <Text>{props.book}</Text>
+                    <TouchableOpacity
+                        onPress={() => setPage(6)}
+                        style={{ flex: 1, marginRight: 5, backgroundColor: 'lightblue', alignItems: 'center', justifyContent: 'center', height: 40 }}>
+                        <Text>{book}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ flex: 1, marginLeft: 5, backgroundColor: 'lightgreen', alignItems: 'center', justifyContent: 'center', height: 40 }}>
-                        <Text>{props.chap}</Text>
+                    <TouchableOpacity
+                        onPress={() => setPage(3)}
+                        style={{ flex: 1, marginLeft: 5, backgroundColor: 'lightgreen', alignItems: 'center', justifyContent: 'center', height: 40 }}>
+                        <Text>{chap}</Text>
                     </TouchableOpacity>
                     <Switch
                         trackColor={{ false: '#767577', true: 'lightblue' }}
@@ -49,7 +61,7 @@ const BiblePage = ({ book, chap, setPage }) => {
                     <Modal
                         animationType="none"
                         transparent={true}
-                        visible={!isBibleDownloaded}
+                        visible={true}
                         onRequestClose={() => {
                             Alert.alert('Modal has been closed.');
                             setModalVisible(!modalVisible);
