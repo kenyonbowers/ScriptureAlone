@@ -1,0 +1,332 @@
+[
+    {
+        "shortName": "GEN",
+        "name": "Genesis",
+        "chapters": 50
+    },
+    {
+        "shortName": "EXO",
+        "name": "Exodus",
+        "chapters": 40
+    },
+    {
+        "shortName": "LEV",
+        "name": "Leviticus",
+        "chapters": 27
+    },
+    {
+        "shortName": "NUM",
+        "name": "Numbers",
+        "chapters": 36
+    },
+    {
+        "shortName": "DEU",
+        "name": "Deuteronomy",
+        "chapters": 34
+    },
+    {
+        "shortName": "JOS",
+        "name": "Joshua",
+        "chapters": 24
+    },
+    {
+        "shortName": "JDG",
+        "name": "Judges",
+        "chapters": 21
+    },
+    {
+        "shortName": "RTH",
+        "name": "Ruth",
+        "chapters": 4
+    },
+    {
+        "shortName": "1SA",
+        "name": "1 Samuel",
+        "chapters": 31
+    },
+    {
+        "shortName": "2SA",
+        "name": "2 Samuel",
+        "chapters": 24
+    },
+    {
+        "shortName": "1KI",
+        "name": "1 Kings",
+        "chapters": 22
+    },
+    {
+        "shortName": "2KI",
+        "name": "2 Kings",
+        "chapters": 25
+    },
+    {
+        "shortName": "1CH",
+        "name": "1 Chronicles",
+        "chapters": 29
+    },
+    {
+        "shortName": "2CH",
+        "name": "2 Chronicles",
+        "chapters": 36
+    },
+    {
+        "shortName": "EZR",
+        "name": "Ezra",
+        "chapters": 10
+    },
+    {
+        "shortName": "NEH",
+        "name": "Nehemiah",
+        "chapters": 13
+    },
+    {
+        "shortName": "EST",
+        "name": "Esther",
+        "chapters": 10
+    },
+    {
+        "shortName": "JOB",
+        "name": "Job",
+        "chapters": 42
+    },
+    {
+        "shortName": "PSA",
+        "name": "Psalms",
+        "chapters": 150
+    },
+    {
+        "shortName": "PRO",
+        "name": "Proverbs",
+        "chapters": 31
+    },
+    {
+        "shortName": "ECC",
+        "name": "Ecclesiastes",
+        "chapters": 12
+    },
+    {
+        "shortName": "SNG",
+        "name": "Song of Solomon",
+        "chapters": 8
+    },
+    {
+        "shortName": "ISA",
+        "name": "Isaiah",
+        "chapters": 66
+    },
+    {
+        "shortName": "JER",
+        "name": "Jeremiah",
+        "chapters": 52
+    },
+    {
+        "shortName": "LAM",
+        "name": "Lamentations",
+        "chapters": 5
+    },
+    {
+        "shortName": "EZK",
+        "name": "Ezekiel",
+        "chapters": 48
+    },
+    {
+        "shortName": "DAN",
+        "name": "Daniel",
+        "chapters": 12
+    },
+    {
+        "shortName": "HOS",
+        "name": "Hosea",
+        "chapters": 14
+    },
+    {
+        "shortName": "JOL",
+        "name": "Joel",
+        "chapters": 3
+    },
+    {
+        "shortName": "AMO",
+        "name": "Amos",
+        "chapters": 9
+    },
+    {
+        "shortName": "OBA",
+        "name": "Obadiah",
+        "chapters": 1
+    },
+    {
+        "shortName": "JON",
+        "name": "Jonah",
+        "chapters": 4
+    },
+    {
+        "shortName": "MIC",
+        "name": "Micah",
+        "chapters": 7
+    },
+    {
+        "shortName": "NUM",
+        "name": "Nahum",
+        "chapters": 3
+    },
+    {
+        "shortName": "HAB",
+        "name": "Habakkuk",
+        "chapters": 3
+    },
+    {
+        "shortName": "ZEP",
+        "name": "Zephaniah",
+        "chapters": 3
+    },
+    {
+        "shortName": "HAG",
+        "name": "Haggai",
+        "chapters": 2
+    },
+    {
+        "shortName": "ZEC",
+        "name": "Zechariah",
+        "chapters": 14
+    },
+    {
+        "shortName": "MAL",
+        "name": "Malachi",
+        "chapters": 4
+    },
+    {
+        "shortName": "MAT",
+        "name": "Matthew",
+        "chapters": 28
+    },
+    {
+        "shortName": "MRK",
+        "name": "Mark",
+        "chapters": 16
+    },
+    {
+        "shortName": "LUK",
+        "name": "Luke",
+        "chapters": 24
+    },
+    {
+        "shortName": "JHN",
+        "name": "John",
+        "chapters": 21
+    },
+    {
+        "shortName": "ACT",
+        "name": "Acts",
+        "chapters": 28
+    },
+    {
+        "shortName": "ROM",
+        "name": "Romans",
+        "chapters": 16
+    },
+    {
+        "shortName": "1CO",
+        "name": "1 Corinthians",
+        "chapters": 16
+    },
+    {
+        "shortName": "2CO",
+        "name": "2 Corinthians",
+        "chapters": 13
+    },
+    {
+        "shortName": "GAL",
+        "name": "Galatians",
+        "chapters": 6
+    },
+    {
+        "shortName": "EPH",
+        "name": "Ephesians",
+        "chapters": 6
+    },
+    {
+        "shortName": "PHP",
+        "name": "Philippians",
+        "chapters": 4
+    },
+    {
+        "shortName": "COL",
+        "name": "Colossians",
+        "chapters": 4
+    },
+    {
+        "shortName": "1TH",
+        "name": "1 Thessalonians",
+        "chapters": 5
+    },
+    {
+        "shortName": "2TH",
+        "name": "2 Thessalonians",
+        "chapters": 3
+    },
+    {
+        "shortName": "1TI",
+        "name": "1 Timothy",
+        "chapters": 6
+    },
+    {
+        "shortName": "2TI",
+        "name": "2 Timothy",
+        "chapters": 4
+    },
+    {
+        "shortName": "TIT",
+        "name": "Titus",
+        "chapters": 3
+    },
+    {
+        "shortName": "PHM",
+        "name": "Philemon",
+        "chapters": 1
+    },
+    {
+        "shortName": "HEB",
+        "name": "Hebrews",
+        "chapters": 13
+    },
+    {
+        "shortName": "JAS",
+        "name": "James",
+        "chapters": 5
+    },
+    {
+        "shortName": "1PE",
+        "name": "1 Peter",
+        "chapters": 5
+    },
+    {
+        "shortName": "2PE",
+        "name": "2 Peter",
+        "chapters": 3
+    },
+    {
+        "shortName": "1JN",
+        "name": "1 John",
+        "chapters": 5
+    },
+    {
+        "shortName": "2JN",
+        "name": "2 John",
+        "chapters": 1
+    },
+    {
+        "shortName": "3JN",
+        "name": "3 John",
+        "chapters": 1
+    },
+    {
+        "shortName": "JUD",
+        "name": "Jude",
+        "chapters": 1
+    },
+    {
+        "shortName": "REV",
+        "name": "Revelation",
+        "chapters": 22
+    }
+]

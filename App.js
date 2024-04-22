@@ -17,14 +17,25 @@ const App = () => {
     download: 6
   };
   const [page, setPage] = useState(pages.bible);
-  const [book, setBibleBook] = useState(1);
-  const [chapter, setBookChapter] = useState(1);
+  const [book, setBibleBook] = useState(2);
+  const [chapter, setBookChapter] = useState(6);
+  const [stack, setStack] = useState([[1, 2, 3, 4], 2, 3, 4]);
+  /*
+    [1 // Book //, 2 // Chapter //, 3 // Verse Start //, 4 // Verse End //]
+    2-6 
+  */
+  const [backButtonDisabled, setBackButtonDisabled] = useState(false);
 
+  const setPageStack = (newPage, currentPage) => {
+    stack.push(currentPage);
+    console.log(stack);
+    setPage(newPage)
+  }
 
   const renderPageComponent = () => {
     switch (page) {
       case pages.bible:
-        return <BiblePage book={book} chap={chapter} setPage={setPage} />;
+        return <BiblePage book={book} chap={chapter} setBook={setBibleBook} setChap={setBookChapter} setPage={setPageStack} />;
       case pages.bookSelect:
         return <Text>1</Text>;
       case pages.chapSelect:
@@ -34,7 +45,7 @@ const App = () => {
       case pages.resource:
         return <Text>4</Text>;
       case pages.download:
-        return <DownloadPage />;
+        return <DownloadPage backButtonDisabled={setBackButtonDisabled} />;
       default:
         return null;
     }
@@ -43,26 +54,45 @@ const App = () => {
   // back button
   useEffect(() => {
     const backAction = () => {
-      //console.log(page);
-      switch (page) {
-        case pages.bible:
+      console.log(stack);
+      if (!backButtonDisabled)
+        if (!stack[0]) {
           return false;
-        case pages.bookSelect:
-          setPage(pages.bible);
-          return true;
-        case pages.chapSelect:
-          setPage(pages.bookSelect);
-          return true;
-        case pages.resourceList:
-          setPage(pages.bible);
-          return true;
-        case pages.resource:
-          setPage(pages.resourceList);
-          return true;
-        case pages.download:
-          setPage(pages.bible);
-          return true;
-      }
+        }
+        else {
+          if (Array.isArray(stack[stack.length - 1])) {
+            setBibleBook(stack[stack.length - 1][0]);
+            setBookChapter(stack[stack.length - 1][1]);
+            setPage(pages.bible);
+            stack.pop();
+            return true;
+          }
+          else {
+            console.log("Stack: ", stack)
+            switch (stack[stack.length - 1]) {
+              case pages.bookSelect:
+                setPage(pages.bookSelect);
+                stack.pop();
+                return true;
+              case pages.chapSelect:
+                setPage(pages.chapSelect);
+                stack.pop();
+                return true;
+              case pages.resourceList:
+                setPage(pages.resourceList);
+                stack.pop();
+                return true;
+              case pages.resource:
+                setPage(pages.resource);
+                stack.pop();
+                return true;
+              case pages.download:
+                setPage(pages.download);
+                stack.pop();
+                return true;
+            }
+          }
+        }
     };
 
     const backHandler = BackHandler.addEventListener(

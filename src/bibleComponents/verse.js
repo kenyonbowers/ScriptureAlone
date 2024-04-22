@@ -1,13 +1,20 @@
-import { View, Text, StyleSheet } from "react-native";
+import React, { View, Text, StyleSheet } from "react-native";
 
 const Verse = props => {
     return (
         <View style={{ flexDirection: 'row' }}>
-            <Text style={props.isDual ? styles.dual : null}>
-                <Text style={styles.verseNumber}>{props.number}  </Text>
-                <Text style={styles.text}>{props.text}</Text>
+            <Text style={props.isDual ? styles.dual : styles.primary}>
+                <Text style={[styles.text, styles.italic, styles.bold]}>{props.number}  </Text>
+                {props.text.map((word, index) => (
+                    word.startsWith('*') ?
+                        <Text key={index} style={[styles.text, styles.italic]}>{word.substr(1)} </Text>
+                        : word.startsWith("|") ?
+                            <Text key={index} style={styles.text}>{word} </Text>
+                            :
+                            <Text key={index} style={styles.text}>{word} </Text>
+                ))}
             </Text>
-        </View>
+        </View >
     );
 };
 
@@ -16,12 +23,13 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     italic: {
-
-    },
-    verseNumber: {
-        fontWeight: 'bold',
         fontStyle: 'italic',
-        fontSize: 20,
+    },
+    bold: {
+        fontWeight: 'bold',
+    },
+    primary: {
+
     },
     dual: {
         color: "#81b0ff"

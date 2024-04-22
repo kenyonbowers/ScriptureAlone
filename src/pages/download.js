@@ -3,81 +3,14 @@ import * as FileSystem from 'expo-file-system';
 import { View, ScrollView, Text, Pressable, StyleSheet, Modal, Button } from 'react-native';
 import PocketBase from 'pocketbase';
 
-const DownloadPage = () => {
+import BibleBookData from '../resources/bibleBookData.json'
+
+const DownloadPage = ({ backButtonDisabled }) => {
     const [data, setData] = useState([]);
     const [download, setDownload] = useState();
 
     const [downloadGoal, setDownloadGoal] = useState(0);
-    const [downloadProgress, setDownloadProgress] = useState(1189);
-
-    const BibleBookNames = [
-        { "name": "GEN", "chapters": 50 },
-        { "name": "EXO", "chapters": 40 },
-        { "name": "LEV", "chapters": 27 },
-        { "name": "NUM", "chapters": 36 },
-        { "name": "DEU", "chapters": 34 },
-        { "name": "JOS", "chapters": 24 },
-        { "name": "JDG", "chapters": 21 },
-        { "name": "RTH", "chapters": 4 },
-        { "name": "1SA", "chapters": 31 },
-        { "name": "2SA", "chapters": 24 },
-        { "name": "1KI", "chapters": 22 },
-        { "name": "2KI", "chapters": 25 },
-        { "name": "1CH", "chapters": 29 },
-        { "name": "2CH", "chapters": 36 },
-        { "name": "EZR", "chapters": 10 },
-        { "name": "NEH", "chapters": 13 },
-        { "name": "EST", "chapters": 10 },
-        { "name": "JOB", "chapters": 42 },
-        { "name": "PSA", "chapters": 150 },
-        { "name": "PRO", "chapters": 31 },
-        { "name": "ECC", "chapters": 12 },
-        { "name": "SNG", "chapters": 8 },
-        { "name": "ISA", "chapters": 66 },
-        { "name": "JER", "chapters": 52 },
-        { "name": "LAM", "chapters": 5 },
-        { "name": "EZK", "chapters": 48 },
-        { "name": "DAN", "chapters": 12 },
-        { "name": "HOS", "chapters": 14 },
-        { "name": "JOL", "chapters": 3 },
-        { "name": "AMO", "chapters": 9 },
-        { "name": "OBA", "chapters": 1 },
-        { "name": "JON", "chapters": 4 },
-        { "name": "MIC", "chapters": 7 },
-        { "name": "NUM", "chapters": 3 },
-        { "name": "HAB", "chapters": 3 },
-        { "name": "ZEP", "chapters": 3 },
-        { "name": "HAG", "chapters": 2 },
-        { "name": "ZEC", "chapters": 14 },
-        { "name": "MAL", "chapters": 4 },
-        { "name": "MAT", "chapters": 28 },
-        { "name": "MRK", "chapters": 16 },
-        { "name": "LUK", "chapters": 24 },
-        { "name": "JHN", "chapters": 21 },
-        { "name": "ACT", "chapters": 28 },
-        { "name": "ROM", "chapters": 16 },
-        { "name": "1CO", "chapters": 16 },
-        { "name": "2CO", "chapters": 13 },
-        { "name": "GAL", "chapters": 6 },
-        { "name": "EPH", "chapters": 6 },
-        { "name": "PHP", "chapters": 4 },
-        { "name": "COL", "chapters": 4 },
-        { "name": "1TH", "chapters": 5 },
-        { "name": "2TH", "chapters": 3 },
-        { "name": "1TI", "chapters": 6 },
-        { "name": "2TI", "chapters": 4 },
-        { "name": "TIT", "chapters": 3 },
-        { "name": "PHM", "chapters": 1 },
-        { "name": "HEB", "chapters": 13 },
-        { "name": "JAS", "chapters": 5 },
-        { "name": "1PE", "chapters": 5 },
-        { "name": "2PE", "chapters": 3 },
-        { "name": "1JN", "chapters": 5 },
-        { "name": "2JN", "chapters": 1 },
-        { "name": "3JN", "chapters": 1 },
-        { "name": "JUD", "chapters": 1 },
-        { "name": "REV", "chapters": 22 }
-    ]
+    const [downloadProgress, setDownloadProgress] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -105,11 +38,13 @@ const DownloadPage = () => {
     }, []); // Empty dependency array to ensure effect runs only once on component mount
 
     useEffect(() => {
-        if (download)
+        if (download) {
+            backButtonDisabled(true);
             downloadVersion();
+        }
     }, [download]);
 
-    const listDirectoryContents = async () => {
+    /*const listDirectoryContents = async () => {
         try {
             const contents = await FileSystem.readDirectoryAsync(FileSystem.documentDirectory + "Bibles/KJB1900/GEN");
             console.log('Contents:', contents);
@@ -118,7 +53,7 @@ const DownloadPage = () => {
         } catch (error) {
             console.error('Error reading directory:', error);
         }
-    }
+    }*/
 
     const downloadVersion = async () => {
         try {
@@ -151,9 +86,9 @@ const DownloadPage = () => {
             }
 
             for (let i = startBookIndex; i < startBookIndex + totalBooksToDownload; i++) {
-                await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + `Bibles/${download.shortName}/${BibleBookNames[i].name}`, { intermediates: true });
+                await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + `Bibles/${download.shortName}/${BibleBookData[i].shortName}`, { intermediates: true });
 
-                //console.log(`Book ${i} downloaded to ${FileSystem.documentDirectory + `Bibles/${download.shortName}/${BibleBookNames[i].name}`}`);
+                //console.log(`Book ${i} downloaded to ${FileSystem.documentDirectory + `Bibles/${download.shortName}/${BibleBookData[i].shortName}`}`);
 
                 // Download chapters for the current book
                 await downloadChaptersForBook(i);
@@ -161,6 +96,7 @@ const DownloadPage = () => {
 
             console.log('All books and chapters downloaded successfully');
             setDownload();
+            backButtonDisabled();
         } catch (error) {
             console.error('Error downloading books and chapters:', error);
             //setDownload();
@@ -169,17 +105,17 @@ const DownloadPage = () => {
 
     const downloadChaptersForBook = async (bookIndex) => {
         try {
-            for (let j = 1; j <= BibleBookNames[bookIndex].chapters; j++) {
-                const chapterUrl = `https://raw.githubusercontent.com/kenyonbowers/HostedBibleVersions/main/${"KJB1762"}/${BibleBookNames[bookIndex].name}/${j}.json`;
+            for (let j = 1; j <= BibleBookData[bookIndex].chapters; j++) {
+                const chapterUrl = `https://raw.githubusercontent.com/kenyonbowers/HostedBibleVersions/main/${"KJB1762"}/${BibleBookData[bookIndex].shortName}/${j}.json`;
                 //console.log(chapterUrl)
                 const chapterResumable = FileSystem.createDownloadResumable(
                     chapterUrl,
-                    FileSystem.documentDirectory + `Bibles/${download.shortName}/${BibleBookNames[bookIndex].name}/${j}.json`
+                    FileSystem.documentDirectory + `Bibles/${download.shortName}/${BibleBookData[bookIndex].shortName}/${j}.json`
                 );
 
                 const { uri: chapterUri } = await chapterResumable.downloadAsync();
-                //console.log(`Chapter ${j} of Book ${bookIndex} downloaded to ${chapterUri}`);
-                setDownloadProgress(downloadProgress + 1);
+                console.log(`Chapter ${j} of Book ${bookIndex} downloaded to ${chapterUri}`);
+                setDownloadProgress(`${BibleBookData[bookIndex].name} ${j} Downloaded.`);
             }
         } catch (error) {
             console.error(`Error downloading chapters for Book ${bookIndex}:`, error);
@@ -190,9 +126,9 @@ const DownloadPage = () => {
         <ScrollView style={{ marginTop: 10 }}>
             {download && <Modal>
                 <View style={styles.modalContainer}>
-                    <Text style={styles.downloadingText}>Downloading {`download.name`}...</Text>
+                    <Text style={styles.downloadingText}>Downloading {download.name}...</Text>
                     <Text>Please do not close the app.</Text>
-                    <Button title="List Dir" onPress={listDirectoryContents} />
+                    <Text>{downloadProgress}</Text>
                 </View>
             </Modal>}
             {data.map((version, index) => (
