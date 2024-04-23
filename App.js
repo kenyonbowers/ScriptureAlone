@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import BiblePage from './src/pages/bible.js'
 import DownloadPage from './src/pages/download.js'
+import ChapterSelect from './src/pages/chapterSelect.js'
 
 const App = () => {
   const pages = {
@@ -19,17 +20,32 @@ const App = () => {
   const [page, setPage] = useState(pages.bible);
   const [book, setBibleBook] = useState(2);
   const [chapter, setBookChapter] = useState(6);
-  const [stack, setStack] = useState([[1, 2, 3, 4], 2, 3, 4]);
+  const [stack, setStack] = useState([[1, 2, 3, 4]]);
   /*
     [1 // Book //, 2 // Chapter //, 3 // Verse Start //, 4 // Verse End //]
     2-6 
   */
   const [backButtonDisabled, setBackButtonDisabled] = useState(false);
 
-  const setPageStack = (newPage, currentPage) => {
-    stack.push(currentPage);
-    console.log(stack);
-    setPage(newPage)
+  const setPageStack = (currentPage, newPage) => {
+    // `currentPage` = the page you are leaving
+    // `newPage` = the page you are entering
+
+    if (currentPage !== (pages.bookSelect || pages.chapSelect))
+      stack.push(currentPage);
+    console.log(stack)
+    if (Array.isArray(newPage)) {
+      console.log("New page:", newPage)
+      setBibleBook(newPage[0]);
+      setBookChapter(newPage[1]);
+      //newPage = 1;
+      setPage(pages.bible);
+    }
+    else {
+      console.log("No")
+      console.log(newPage)
+      setPage(newPage)
+    }
   }
 
   const renderPageComponent = () => {
@@ -39,7 +55,7 @@ const App = () => {
       case pages.bookSelect:
         return <Text>1</Text>;
       case pages.chapSelect:
-        return <Text>2</Text>;
+        return <ChapterSelect book={book} chap={chapter} setChap={setBookChapter} setPage={setPageStack} />
       case pages.resourceList:
         return <Text>3</Text>;
       case pages.resource:

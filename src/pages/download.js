@@ -44,17 +44,6 @@ const DownloadPage = ({ backButtonDisabled }) => {
         }
     }, [download]);
 
-    /*const listDirectoryContents = async () => {
-        try {
-            const contents = await FileSystem.readDirectoryAsync(FileSystem.documentDirectory + "Bibles/KJB1900/GEN");
-            console.log('Contents:', contents);
-            //console.log('URI: ', directoryUri)
-            return contents;
-        } catch (error) {
-            console.error('Error reading directory:', error);
-        }
-    }*/
-
     const downloadVersion = async () => {
         try {
             const dirInfo = await FileSystem.getInfoAsync(FileSystem.documentDirectory + `Bibles`);

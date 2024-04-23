@@ -72,12 +72,12 @@ const BiblePage = ({ book, chap, setBook, setChap, setPage }) => {
                     <View>
                         <View style={styles.topBar}>
                             <TouchableOpacity
-                                onPress={() => setPage(6, [book, chap, 0, 0])}
+                                onPress={() => setPage([book, chap, 0, 0], 6)}
                                 style={{ flex: 1, marginRight: 5, backgroundColor: 'lightblue', alignItems: 'center', justifyContent: 'center', height: 40 }}>
                                 <Text>{BibleBookData[book - 1].name}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                onPress={() => setPage(3)}
+                                onPress={() => setPage([book, chap, 0, 0], 3)}
                                 style={{ flex: 1, marginLeft: 5, backgroundColor: 'lightgreen', alignItems: 'center', justifyContent: 'center', height: 40 }}>
                                 <Text>{chap}</Text>
                             </TouchableOpacity>
@@ -109,7 +109,7 @@ const BiblePage = ({ book, chap, setBook, setChap, setPage }) => {
                                         <Text style={styles.modalText}>You have no Bibles downloaded. Please go to the Downloads page to download a Bible.</Text>
                                         <Pressable
                                             style={styles.button}
-                                            onPress={() => setPage(6, [1, 1, 0, 0])}>
+                                            onPress={() => setPage([1, 1, 0, 0], 6)}>
                                             <Text style={styles.modalTextButton}>Go to Downloads!</Text>
                                         </Pressable>
                                     </View>
