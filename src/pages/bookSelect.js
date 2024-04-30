@@ -4,7 +4,7 @@ import { View, ScrollView, StyleSheet, Switch, TouchableOpacity, Text, Modal, Bu
 import BibleBookData from '../resources/bibleBookData.json'
 
 
-const ChapterSelect = ({ book, chap, setChap, setPage }) => {
+const BookSelect = ({ book, chap, setBook, setPage }) => {
 
     useEffect(() => {
 
@@ -19,7 +19,7 @@ const ChapterSelect = ({ book, chap, setChap, setPage }) => {
                     <Text>{BibleBookData[book - 1].name}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => setPage(3, [book, chap, 0, 0])}
+                    onPress={() => { setPage(2, 3) }}
                     style={{ flex: 1, marginLeft: 5, backgroundColor: 'lightgreen', alignItems: 'center', justifyContent: 'center', height: 40 }}>
                     <Text>{chap}</Text>
                 </TouchableOpacity>
@@ -29,13 +29,13 @@ const ChapterSelect = ({ book, chap, setChap, setPage }) => {
                 contentInsetAdjustmentBehavior="automatic"
                 contentContainerStyle={styles.container}
             >
-                {Array(BibleBookData[book - 1].chapters).fill().map((_, index) => (
+                {BibleBookData.map((book, index) => (
                     <TouchableOpacity
                         key={index}
                         style={styles.button}
-                        onPress={() => setPage(3, [book, index + 1, 0, 0])}
+                        onPress={() => { setBook(index + 1); setPage(2, 3) }}
                     >
-                        <Text style={styles.text}>{(index + 1).toString()}</Text>
+                        <Text style={styles.text}>{book.name}</Text>
                     </TouchableOpacity>
                 ))}
             </ScrollView>
@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     // Chapter Select
     container: {
         paddingTop: 50,
-        alignItems: 'flex-start',
-        justifyContent: "space-between",
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
         flexDirection: "row",
         flexWrap: 'wrap',
     },
@@ -70,8 +70,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'lightgray',
         alignItems: 'center',
         justifyContent: 'center',
-        height: 70,
-        width: 70,
+        height: 90,
+        width: 90,
         borderRadius: 15,
         marginTop: 10,
     },
@@ -81,4 +81,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ChapterSelect;
+export default BookSelect;

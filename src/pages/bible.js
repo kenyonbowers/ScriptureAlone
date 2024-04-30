@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as FileSystem from 'expo-file-system';
 import { View, ScrollView, StyleSheet, Switch, TouchableOpacity, Text, Modal, Pressable } from "react-native";
 
-import DualSwitcher from '../bibleComponents/dualSwitcher.js'
+import Verse from '../bibleComponents/verse.js';
 
 import BibleBookData from '../resources/bibleBookData.json'
 
@@ -72,25 +72,33 @@ const BiblePage = ({ book, chap, setBook, setChap, setPage }) => {
                     <View>
                         <View style={styles.topBar}>
                             <TouchableOpacity
-                                onPress={() => setPage([book, chap, 0, 0], 6)}
+                                onPress={() => setPage([book, chap, 0, 0], 2)}
                                 style={{ flex: 1, marginRight: 5, backgroundColor: 'lightblue', alignItems: 'center', justifyContent: 'center', height: 40 }}>
                                 <Text>{BibleBookData[book - 1].name}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={() => setPage([book, chap, 0, 0], 3)}
-                                style={{ flex: 1, marginLeft: 5, backgroundColor: 'lightgreen', alignItems: 'center', justifyContent: 'center', height: 40 }}>
+                                style={{ flex: 1, marginHorizontal: 5, backgroundColor: 'lightgreen', alignItems: 'center', justifyContent: 'center', height: 40 }}>
                                 <Text>{chap}</Text>
                             </TouchableOpacity>
-                            <Switch
-                                trackColor={{ false: '#767577', true: 'lightblue' }}
-                                thumbColor={isDualView ? '#f4f3f4' : '#f4f3f4'}
-                                ios_backgroundColor="#3e3e3e"
-                                onValueChange={toggleDualView}
-                                value={isDualView}
-                            />
+                            <TouchableOpacity
+                                onPress={() => setPage([book, chap, 0, 0], 3)}
+                                style={{ flex: 1, marginLeft: 5, backgroundColor: 'lightgray', alignItems: 'center', justifyContent: 'center', height: 40 }}>
+                                <Text>KJV</Text>
+                            </TouchableOpacity>
                         </View>
                         <ScrollView showsVerticalScrollIndicator={false} contentInsetAdjustmentBehavior="automatic">
-                            <DualSwitcher pri={primaryVerData.verses} sec={secondaryVerData.verses} isDual={isDualView}></DualSwitcher>
+                            <View style={styles.container}>
+                                {primaryVerData.verses.map((verse, index) => (
+                                    <React.Fragment key={index}>
+                                        <Verse
+                                            key={index}
+                                            number={verse.verse}
+                                            text={verse.text}
+                                        />
+                                    </React.Fragment>
+                                ))}
+                            </View>
                         </ScrollView>
                     </View>
                     :
@@ -172,6 +180,11 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
         textAlign: 'center',
+    },
+    // Verses
+    container: {
+        paddingTop: 60,
+        paddingBottom: 20
     }
 });
 
