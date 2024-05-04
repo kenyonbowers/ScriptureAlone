@@ -80,7 +80,7 @@ const DownloadPage = ({ backButtonDisabled }) => {
                 //console.log(`Book ${i} downloaded to ${FileSystem.documentDirectory + `Bibles/${download.shortName}/${BibleBookData[i].shortName}`}`);
 
                 // Download chapters for the current book
-                await downloadChaptersForBook(i);
+                await downloadChaptersForBook(i, totalBooksToDownload == 39 ? 39 : 66);
             }
 
             console.log('All books and chapters downloaded successfully');
@@ -92,7 +92,7 @@ const DownloadPage = ({ backButtonDisabled }) => {
         }
     };
 
-    const downloadChaptersForBook = async (bookIndex) => {
+    const downloadChaptersForBook = async (bookIndex, lastIndex) => {
         try {
             for (let j = 1; j <= BibleBookData[bookIndex].chapters; j++) {
                 const chapterUrl = `https://raw.githubusercontent.com/kenyonbowers/HostedBibleVersions/main/${"KJB1762"}/${BibleBookData[bookIndex].shortName}/${j}.json`;
@@ -105,6 +105,14 @@ const DownloadPage = ({ backButtonDisabled }) => {
                 const { uri: chapterUri } = await chapterResumable.downloadAsync();
                 console.log(`Chapter ${j} of Book ${bookIndex} downloaded to ${chapterUri}`);
                 setDownloadProgress(`${BibleBookData[bookIndex].name} ${j} Downloaded.`);
+            }
+            if (bookIndex + 1 == lastIndex) {
+                await FileSystem.writeAsStringAsync(
+                    FileSystem.documentDirectory + `Bibles/${download.shortName}/version.json`,
+                    download.toString()
+                );
+                console.log(`version.json downloaded to ${FileSystem.documentDirectory + `Bibles/${download.shortName}/version.json`}`);
+                setDownloadProgress(`Verson Data Downloaded.`);
             }
         } catch (error) {
             console.error(`Error downloading chapters for Book ${bookIndex}:`, error);
