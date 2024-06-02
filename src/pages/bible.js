@@ -99,6 +99,11 @@ const BiblePage = ({ book, chap, setBook, setChap, setPage }) => {
                                     </React.Fragment>
                                 ))}
                             </View>
+                            <TouchableOpacity
+                                onPress={() => setPage([book, chap, 0, 0], 2)}
+                                style={styles.nextChapterButton}>
+                                <Text>Next Chapter</Text>
+                            </TouchableOpacity>
                         </ScrollView>
                     </View>
                     :
@@ -184,7 +189,18 @@ const styles = StyleSheet.create({
     // Verses
     container: {
         paddingTop: 60,
-        paddingBottom: 20
+    },
+    nextChapterButton: {
+        marginTop: 20,
+        marginBottom: 40,
+        flex: 1,
+        marginRight: 5,
+        borderWidth: 1.5,
+        borderRadius: 2.5,
+        borderColor: 'lightgray',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 50
     }
 });
 

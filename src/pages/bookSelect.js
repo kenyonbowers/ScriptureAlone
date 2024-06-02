@@ -60,20 +60,16 @@ const styles = StyleSheet.create({
     // Chapter Select
     container: {
         paddingTop: 50,
-        alignItems: 'center',
         justifyContent: 'space-evenly',
-        flexDirection: "row",
-        flexWrap: 'wrap',
+        flexDirection: "column",
     },
     button: {
-        marginHorizontal: 2.5,
-        backgroundColor: 'lightgray',
-        alignItems: 'center',
+        marginHorizontal: 5,
+        borderTopColor: "lightgray",
+        borderTopWidth: 0.5,
+        height: 50,
+        width: "full",
         justifyContent: 'center',
-        height: 90,
-        width: 90,
-        borderRadius: 15,
-        marginTop: 10,
     },
     text: {
         color: 'black',

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BackHandler, Alert, Text } from 'react-native'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import BiblePage from './src/pages/bible.js'
 import BookSelect from './src/pages/bookSelect.js';
@@ -29,7 +28,7 @@ const App = () => {
   */
   const [backButtonDisabled, setBackButtonDisabled] = useState(false);
 
-  const setPageStack = (currentPage, newPage) => {
+  const setPageStack = async (currentPage, newPage) => {
     // `currentPage` = the page you are leaving
     // `newPage` = the page you are entering
     stack.push(currentPage);
@@ -38,6 +37,7 @@ const App = () => {
       console.log("New page:", newPage)
       setBibleBook(newPage[0]);
       setBookChapter(newPage[1]);
+      await AsyncStorage.setItem('BibleCache', newPage.toString());
       //newPage = 1;
       setPage(pages.bible);
     }
